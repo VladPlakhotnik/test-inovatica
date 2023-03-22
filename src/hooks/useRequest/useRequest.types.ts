@@ -1,4 +1,4 @@
-export interface ModalType {
+export interface RequestType {
   _id: string
   text: string
   type: string

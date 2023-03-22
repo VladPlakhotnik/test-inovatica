@@ -36,7 +36,7 @@ export const Container = styled.div`
     color: #fff !important;
   }
 `
-export const H1 = styled.h1`
+export const Heading = styled.h1`
   text-align: center;
   margin-bottom: 4rem;
 `

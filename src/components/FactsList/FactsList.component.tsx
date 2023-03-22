@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
-import { FactsListType } from './FactsList.types'
+import { useEffect, useCallback } from 'react'
 import { Table } from 'antd'
-import { FlexBox, Container, H1 } from './FactsList.styles'
+
+import { useRequest } from '../../hooks/useRequest'
+import { FactsListType } from './FactsList.types'
+import { FlexBox, Container, Heading } from './FactsList.styles'
 import { Modal } from '../Modal'
 
 const columns = [
@@ -26,36 +28,21 @@ const columns = [
 ]
 
 export const FactsList: React.FC = () => {
-  const [loading, setLoading] = useState(false)
-  const [facts, setFacts] = useState<FactsListType[]>([])
-
-  const fetchData = async () => {
-    try {
-      setLoading(true)
-      const response = await fetch('https://cat-fact.herokuapp.com/facts')
-      const json = await response.json()
-      setFacts(json)
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const fetchRequest = useCallback(
+    () => fetch('https://cat-fact.herokuapp.com/facts'),
+    [],
+  )
+  const { loading, data, fetchData } = useRequest<FactsListType[]>(fetchRequest)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [fetchData])
 
   return (
     <FlexBox>
       <Container>
-        <H1>Recruitment task | Table of data retrieved from API</H1>
-        <Table
-          bordered
-          loading={loading}
-          dataSource={facts}
-          columns={columns}
-        />
+        <Heading>Recruitment task | Table of data retrieved from API</Heading>
+        <Table bordered loading={loading} dataSource={data} columns={columns} />
       </Container>
     </FlexBox>
   )
