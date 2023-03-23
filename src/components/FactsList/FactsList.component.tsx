@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Table } from 'antd'
 
 import { getColumns } from './FactsList.helper'
@@ -8,13 +8,9 @@ import { FactsListType } from './FactsList.types'
 import { FlexBox, Container, Heading } from './FactsList.styles'
 
 export const FactsList: React.FC = () => {
-  const fetchRequest = useCallback(
-    () => fetch('https://cat-fact.herokuapp.com/facts?animal_type=cat'),
-    [],
-  )
   const [detailsId, setDetailsId] = useState('')
   const { loading, data, fetchData } = useRequest<FactsListType[]>(
-    fetchRequest,
+    () => fetch('https://cat-fact.herokuapp.com/facts?animal_type=cat'),
     'facts',
   )
 
@@ -26,7 +22,7 @@ export const FactsList: React.FC = () => {
 
   useEffect(() => {
     fetchData()
-  }, [fetchData])
+  }, [])
 
   return (
     <FlexBox>
