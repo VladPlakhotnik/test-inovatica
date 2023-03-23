@@ -1,11 +1,9 @@
 import styled from 'styled-components'
 
-export const Button = styled.button`
-  padding: 0.5rem 1rem;
-  background-color: #fff;
-  border-radius: 0.4rem;
-
-  &:hover {
-    cursor: pointer;
-  }
+export const Container = styled.div`
+  display: flex;
+  gap: 11rem;
+`
+export const UserPhoto = styled.img`
+  width: 10rem;
 `

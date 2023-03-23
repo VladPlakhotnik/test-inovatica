@@ -1,23 +1,36 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useContext } from 'react'
 import { Modal } from 'antd'
 
-export const useRequest = <T>(request: () => Promise<Response>) => {
+import { CacheContext } from '../../context/CacheProvider'
+
+export const useRequest = <T>(
+  request: () => Promise<Response>,
+  queryKey: any,
+) => {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<T>()
+  const { readCache, modifyCache } = useContext(CacheContext)
 
   const fetchData = useCallback(() => {
+    const cachedData = readCache(JSON.stringify(queryKey))
+    if (cachedData) {
+      setData(cachedData as T)
+      return
+    }
     setLoading(true)
     request()
       .then(req => req.json())
       .then(json => {
+        modifyCache(JSON.stringify(queryKey), json)
         setData(json)
-        setLoading(false)
       })
       .catch(() => {
         showErrorModal()
+      })
+      .finally(() => {
         setLoading(false)
       })
-  }, [request])
+  }, [request, queryKey])
 
   return { loading, data, fetchData }
 }

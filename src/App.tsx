@@ -1,7 +1,12 @@
 import { FactsList } from './components/FactsList'
+import { CacheProvider } from './context/CacheProvider'
 
 const App = () => {
-  return <FactsList />
+  return (
+    <CacheProvider>
+      <FactsList />
+    </CacheProvider>
+  )
 }
 
 export default App
