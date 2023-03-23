@@ -1,6 +1,6 @@
 # Recruitment task
 
-Table of data retrieved from API | [DEMO Link](https://test-inovatica.vercel.app/)<a href='https://test-inovatica.vercel.app/' target="_blank">DEMO Link</a>
+Table of data retrieved from API | [DEMO Link](https://test-inovatica.vercel.app/)
 
 ## Main App
 
