@@ -1,8 +1,9 @@
 import type { InputRef } from 'antd'
-import type { FilterConfirmProps } from 'antd/es/table/interface'
+import type { FilterConfirmProps, FilterValue } from 'antd/es/table/interface'
 
 export interface FactsListType {
   text: string
+  type: string
   _id: string
 }
 
@@ -10,6 +11,7 @@ export type FactsListIndex = keyof FactsListType
 
 export type GetColumnsProps = {
   onDetailsClick: (id: string) => void
+  filteredInfo: Record<string, FilterValue | null>
 } & Omit<GetColumnSearchProps, 'dataIndex'>
 
 export interface GetColumnSearchProps {

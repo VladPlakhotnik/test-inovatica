@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react'
 import { Table } from 'antd'
-import type { FilterConfirmProps } from 'antd/es/table/interface'
-import type { InputRef } from 'antd'
+import type { FilterConfirmProps, FilterValue } from 'antd/es/table/interface'
+import type { TableProps, InputRef } from 'antd'
 
 import { getColumns } from './FactsList.helper'
 import { Modal } from '../Modal'
@@ -13,13 +13,21 @@ export const FactsList: React.FC = () => {
   const [searchText, setSearchText] = useState('')
   const [searchedColumn, setSearchedColumn] = useState('')
   const searchInput = useRef<InputRef>(null)
-
+  const [filteredInfo, setFilteredInfo] = useState<
+    Record<string, FilterValue | null>
+  >({})
   const [detailsId, setDetailsId] = useState('')
-
   const { loading, data, fetchData } = useRequest<FactsListType[]>(
     () => fetch('https://cat-fact.herokuapp.com/facts?animal_type=cat'),
     'facts',
   )
+
+  const handleChange: TableProps<FactsListType>['onChange'] = (
+    pagination,
+    filters,
+  ) => {
+    setFilteredInfo(filters)
+  }
 
   const handleSearch = (
     selectedKeys: string[],
@@ -49,8 +57,9 @@ export const FactsList: React.FC = () => {
         setSearchedColumn,
         handleSearch,
         handleReset,
+        filteredInfo,
       }),
-    [searchText, searchedColumn, searchInput],
+    [searchText, searchedColumn, searchInput, filteredInfo],
   )
 
   const onClose = () => setDetailsId('')
@@ -64,7 +73,13 @@ export const FactsList: React.FC = () => {
       <Container>
         <Heading>Recruitment task | Table of data retrieved from API</Heading>
 
-        <Table bordered loading={loading} dataSource={data} columns={columns} />
+        <Table
+          bordered
+          loading={loading}
+          dataSource={data}
+          columns={columns}
+          onChange={handleChange}
+        />
         <Modal id={detailsId} onClose={onClose} />
       </Container>
     </FlexBox>

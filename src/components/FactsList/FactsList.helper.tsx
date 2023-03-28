@@ -11,6 +11,7 @@ import {
 
 export const getColumns = ({
   onDetailsClick,
+  filteredInfo,
   ...searchProps
 }: GetColumnsProps): ColumnsType<FactsListType> => [
   {
@@ -19,12 +20,30 @@ export const getColumns = ({
     key: 'text',
     sorter: (a: FactsListType, b: FactsListType) =>
       a.text.localeCompare(b.text),
+    filteredValue: filteredInfo.text || null,
+    onFilter: (value: string | number | boolean, record) =>
+      record.text.includes(value as string),
     ...getColumnSearch({ dataIndex: 'text', ...searchProps }),
+    ellipsis: true,
   },
   {
     title: 'Id',
     dataIndex: '_id',
     key: '_id',
+    ellipsis: true,
+  },
+  {
+    title: 'Types',
+    dataIndex: 'type',
+    key: 'type',
+    filters: [
+      { text: 'Cats', value: 'cat' },
+      { text: 'Dogs', value: 'dog' },
+      { text: 'Horses', value: 'horse' },
+    ],
+    filteredValue: filteredInfo.type || null,
+    onFilter: (value: string | number | boolean, record) =>
+      record.type.includes(value as string),
   },
   {
     title: 'Details',
@@ -33,6 +52,7 @@ export const getColumns = ({
     render: (id: string) => (
       <Button onClick={() => onDetailsClick(id)}>More Details</Button>
     ),
+    ellipsis: true,
   },
 ]
 
@@ -107,13 +127,8 @@ export const getColumnSearch = ({
     </div>
   ),
   filterIcon: (filtered: boolean) => (
-    <SearchOutlined style={{ color: filtered ? '#000' : undefined }} />
+    <SearchOutlined style={{ color: filtered ? '#1677ff' : '#000' }} />
   ),
-  onFilter: (value, record) =>
-    record[dataIndex]
-      .toString()
-      .toLowerCase()
-      .includes((value as string).toLowerCase()),
   onFilterDropdownOpenChange: visible => {
     if (visible) {
       setTimeout(() => searchInput.current?.select(), 100)
