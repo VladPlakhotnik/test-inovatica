@@ -18,7 +18,7 @@ export const FactsList: React.FC = () => {
   >({})
   const [detailsId, setDetailsId] = useState('')
   const { loading, data, fetchData } = useRequest<FactsListType[]>(
-    () => fetch('https://cat-fact.herokuapp.com/facts?animal_type=cat'),
+    () => fetch('https://cat-fact.herokuapp.com/facts/random?amount=50'),
     'facts',
   )
 

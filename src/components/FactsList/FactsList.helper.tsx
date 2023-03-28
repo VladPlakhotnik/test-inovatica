@@ -37,9 +37,9 @@ export const getColumns = ({
     dataIndex: 'type',
     key: 'type',
     filters: [
-      { text: 'Cats', value: 'cat' },
-      { text: 'Dogs', value: 'dog' },
-      { text: 'Horses', value: 'horse' },
+      { text: 'cat', value: 'cat' },
+      { text: 'dog', value: 'dog' },
+      { text: 'horse', value: 'horse' },
     ],
     filteredValue: filteredInfo.type || null,
     onFilter: (value: string | number | boolean, record) =>
